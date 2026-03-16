@@ -18,44 +18,44 @@ def menu():
 
 
 def main():
-    sistema = SistemaEstoque()
+    estoque = SistemaEstoque()
 
     while True:
         menu()
         opcao = input("Escolha uma opção: ").strip()
 
         if opcao == "1":
-            sistema.cadastrar_cliente()
+            estoque.cadastrar_cliente()
 
         elif opcao == "2":
-            sistema.listar_clientes()
+            estoque.listar_clientes()
 
         elif opcao == "3":
-            sistema.cadastrar_produto()
+            estoque.cadastrar_produto()
 
         elif opcao == "4":
-            sistema.listar_produtos()
+            estoque.listar_produtos()
 
         elif opcao == "5":
-            sistema.pesquisar_produto()
+            estoque.pesquisar_produto()
 
         elif opcao == "6":
-            sistema.realizar_venda()
+            estoque.realizar_venda()
 
         elif opcao == "7":
-            sistema.visualizar_fila_vendas()
+            estoque.visualizar_fila_vendas()
 
         elif opcao == "8":
-            sistema.desfazer_ultima_operacao()
+            estoque.desfazer_ultima_operacao()
 
         elif opcao == "9":
-            sistema.exibir_valor_total_estoque()
+            estoque.exibir_valor_total_estoque()
 
         elif opcao == "10":
-            sistema.exibir_valor_total_vendas()
+            estoque.exibir_valor_total_vendas()
 
         elif opcao == "11":
-            sistema.exibir_clientes_valores_gastos()
+            estoque.exibir_clientes_valores_gastos()
 
         elif opcao == "12":
             print("Encerrando o sistema...")
