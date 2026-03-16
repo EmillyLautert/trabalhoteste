@@ -1,6 +1,6 @@
 from estoque import SistemaEstoque
 
-def exibir_menu():
+def menu():
     print("\n===== MENU ESTOQUE =====")
     print("1 - Cadastrar cliente")
     print("2 - Listar clientes")
@@ -21,7 +21,7 @@ def main():
     sistema = SistemaEstoque()
 
     while True:
-        exibir_menu()
+        menu()
         opcao = input("Escolha uma opção: ").strip()
 
         if opcao == "1":
