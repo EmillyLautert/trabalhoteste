@@ -56,6 +56,8 @@ class SistemaEstoque:
 
         for cliente in lista:
             print(cliente)
+            
+'''MARIA ATÉ AQUI'''
 
     def cadastrar_produto(self):
         print("\n===== CADASTRAR PRODUTO =====")
@@ -132,6 +134,8 @@ class SistemaEstoque:
             print("Produto não encontrado.")
         else:
             print(produto)
+            
+'''ATÉ AQUI CAMILA'''
 
     def realizar_venda(self):
         print("\n===== REALIZAR VENDA =====")
