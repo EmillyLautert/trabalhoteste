@@ -81,6 +81,8 @@ def salvar_produtos(lista_produtos):
     except:
         print("Erro ao salvar produtos. Tente novamente.")
 
+''' GABRIELA ATÉ AQUI'''
+'''MATHIAS DEPOIS DAQUI'''
 
 def carregar_vendas(fila_vendas, lista_clientes, lista_produtos):
     garantir_arquivo("vendas.csv")
