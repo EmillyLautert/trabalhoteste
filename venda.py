@@ -1,17 +1,15 @@
 class Venda:
-    def __init__(self, idVenda, clienteVenda, produtoVenda, quantidadeVenda, valorTotal):
-        self.idVenda = idVenda
-        self.clienteVenda = clienteVenda
-        self.produtoVenda = produtoVenda
-        self.quantidadeVenda = quantidadeVenda
-        self.valorTotal = valorTotal
+    """Representa uma venda realizada no sistema."""
 
-    def to_csv(self):
-        return f"{self.idVenda};{self.cliente.idCliente};{self.produto.idProduto};{self.quantidadeVenda};{self.valorTotal}"
+    def __init__(self, idVenda, cliente, produto, quantidade):
+        self.idVenda = idVenda
+        self.cliente = cliente
+        self.produto = produto
+        self.quantidade = quantidade
+        self.valorTotal = quantidade * produto.precoProduto
 
     def __str__(self):
-        return (
-            f"ID Venda: {self.idVenda} | Cliente: {self.cliente.nomeCliente} | "
-            f"Produto: {self.produto.nomeProduto} | Quantidade: {self.quantidadeVenda} | "
-            f"Total: R$ {self.valorTotal:.2f}"
-        )
+        return f"ID: {self.idVenda}, Cliente: {self.cliente.nomeCliente}, Produto: {self.produto.nomeProduto}, Quantidade: {self.quantidade}, Valor Total: R${self.valorTotal:.2f}"
+
+    def to_csv(self):
+        return f"{self.idVenda},{self.cliente.idCliente},{self.produto.idProduto},{self.quantidade},{self.valorTotal}\n"
