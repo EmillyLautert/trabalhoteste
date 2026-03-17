@@ -11,11 +11,11 @@ class Fila:
         return self._itens.pop(0)
 
     def front(self):
-        if self.esta_vazia():
+        if self.estaVazia():
             return None
         return self._itens[0]
 
-    def esta_vazia(self):
+    def estaVazia(self):
         return len(self._itens) == 0
 
     def listar(self):
