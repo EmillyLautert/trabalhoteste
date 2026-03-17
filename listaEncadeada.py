@@ -9,17 +9,17 @@ class ListaEncadeada:
         self.head = None
 
     def inserirFim(self, valor):
-        novo = Nodo(valor)
+        novoNodo = Nodo(valor)
 
         if self.head is None:
-            self.head = novo
+            self.head = novoNodo
             return
 
         atual = self.head
         while atual.proximo is not None:
             atual = atual.proximo
 
-        atual.proximo = novo
+        atual.proximo = novoNodo
 
     def listar(self):
         elementos = []
@@ -31,91 +31,87 @@ class ListaEncadeada:
 
         return elementos
 
-    def buscarIdProduto(self, idProduto):
+    def buscarClientePorId(self, idCliente):
         atual = self.head
 
         while atual is not None:
-            if str(atual.valor.id) == str(id):
-                return atual.valor
+            if hasattr(atual.valor, "idCliente"):
+                if str(atual.valor.idCliente) == str(idCliente):
+                    return atual.valor
             atual = atual.proximo
 
         return None
 
-    def buscarIdCliente(self, idCliente):
+    def buscarClientePorNome(self, nomeCliente):
         atual = self.head
+        nomeCliente = nomeCliente.lower()
 
         while atual is not None:
-            if str(atual.valor.id) == str(id):
-                return atual.valor
+            if hasattr(atual.valor, "nomeCliente"):
+                if atual.valor.nomeCliente.lower() == nomeCliente:
+                    return atual.valor
             atual = atual.proximo
 
         return None
 
-    def buscarIdVenda(self, idVenda):
+    def buscarProdutoPorId(self, idProduto):
         atual = self.head
 
         while atual is not None:
-            if str(atual.valor.id) == str(id):
-                return atual.valor
+            if hasattr(atual.valor, "idProduto"):
+                if str(atual.valor.idProduto) == str(idProduto):
+                    return atual.valor
             atual = atual.proximo
 
         return None
 
-    def buscarNomeProduto(self, nomeProduto):
+    def buscarProdutoPorNome(self, nomeProduto):
         atual = self.head
-        nome = nome.lower()
+        nomeProduto = nomeProduto.lower()
 
         while atual is not None:
-            if atual.valor.nome.lower() == nome:
-                return atual.valor
+            if hasattr(atual.valor, "nomeProduto"):
+                if atual.valor.nomeProduto.lower() == nomeProduto:
+                    return atual.valor
             atual = atual.proximo
 
         return None
 
-        def buscarNomeCliente(self, nomeCliente):
-        atual = self.head
-        nome = nome.lower()
-
-        while atual is not None:
-            if atual.valor.nome.lower() == nome:
-                return atual.valor
-            atual = atual.proximo
-
-        return None
-        
-    def removerIdProduto(self, idProduto):
+    def removerClientePorId(self, idCliente):
         atual = self.head
         anterior = None
 
         while atual is not None:
-            if str(atual.valor.id) == str(id):
-                if anterior is None:
-                    self.head = atual.proximo
-                else:
-                    anterior.proximo = atual.proximo
-                return atual.valor
+            if hasattr(atual.valor, "idCliente"):
+                if str(atual.valor.idCliente) == str(idCliente):
+                    if anterior is None:
+                        self.head = atual.proximo
+                    else:
+                        anterior.proximo = atual.proximo
+                    return atual.valor
 
             anterior = atual
             atual = atual.proximo
 
         return None
 
-        def removerIdCliente(self, idCliente):
+    def removerProdutoPorId(self, idProduto):
         atual = self.head
         anterior = None
 
         while atual is not None:
-            if str(atual.valor.id) == str(id):
-                if anterior is None:
-                    self.head = atual.proximo
-                else:
-                    anterior.proximo = atual.proximo
-                return atual.valor
+            if hasattr(atual.valor, "idProduto"):
+                if str(atual.valor.idProduto) == str(idProduto):
+                    if anterior is None:
+                        self.head = atual.proximo
+                    else:
+                        anterior.proximo = atual.proximo
+                    return atual.valor
 
             anterior = atual
             atual = atual.proximo
 
         return None
-        
+
     def estaVazia(self):
         return self.head is None
