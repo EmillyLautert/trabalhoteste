@@ -1,22 +1,22 @@
 class Pilha:
     def __init__(self):
-        self._itens = []
+        self.itens = []
 
     def push(self, item):
-        self._itens.append(item)
+        self.itens.append(item)
 
     def pop(self):
         if self.estaVazia():
             return None
-        return self._itens.pop()
+        return self.itens.pop()
 
     def peek(self):
         if self.estaVazia():
             return None
-        return self._itens[-1]
+        return self.itens[-1]
 
     def estaVazia(self):
-        return len(self._itens) == 0
+        return len(self.itens) == 0
 
     def tamanho(self):
-        return len(self._itens)
+        return len(self.itens)
