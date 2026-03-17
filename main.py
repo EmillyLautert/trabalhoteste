@@ -27,37 +27,37 @@ def main():
         opcao = input("Escolha uma opção: ").strip()
 
         if opcao == "1":
-            estoque.cadastrar_cliente()
+            estoque.cadastrarCliente()
 
         elif opcao == "2":
-            estoque.listar_clientes()
+            estoque.listarClientes()
 
         elif opcao == "3":
-            estoque.cadastrar_produto()
+            estoque.cadastrarProduto()
 
         elif opcao == "4":
-            estoque.listar_produtos()
+            estoque.listarProdutos()
 
         elif opcao == "5":
-            estoque.pesquisar_produto()
+            estoque.pesquisarProduto()
 
         elif opcao == "6":
-            estoque.realizar_venda()
+            estoque.realizarVenda()
 
         elif opcao == "7":
-            estoque.visualizar_fila_vendas()
+            estoque.visualizarFilaVendas()
 
         elif opcao == "8":
-            estoque.desfazer_ultima_operacao()
+            estoque.desfazerUltimaOperacao()
 
         elif opcao == "9":
-            estoque.exibir_valor_total_estoque()
+            estoque.valorTotalEstoque()
 
         elif opcao == "10":
-            estoque.exibir_valor_total_vendas()
+            estoque.valorTotalVendas()
 
         elif opcao == "11":
-            estoque.exibir_clientes_valores_gastos()
+            estoque.clientesValoresGastos()
 
         elif opcao == "12":
             print("Encerrando o sistema...")
