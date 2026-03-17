@@ -1,12 +1,12 @@
 class Produto:
-    def __init__(self, id, nome, quantidade, preco):
-        self.id = id
-        self.nome = nome
-        self.quantidade = quantidade
-        self.preco = preco
+    def __init__(self, idProduto, nomeProduto, quantidadeProduto, precoProduto):
+        self.idProduto = idProduto
+        self.nomeProduto = nomeProduto
+        self.quantidadeProduto = quantidadeProduto
+        self.precoProduto = precoProduto
 
     def to_csv(self):
-        return f"{self.id};{self.nome};{self.quantidade};{self.preco}"
+        return f"{self.idProduto};{self.nomeProduto};{self.quantidadeProduto};{self.precoProduto}"
 
     def __str__(self):
-        return f"ID: {self.id} | Nome: {self.nome} | Qtd: {self.quantidade} | Preço: R$ {self.preco:.2f}"
+        return f"ID: {self.idProduto} | Nome: {self.nomeProduto} | Qtd: {self.quantidadeProduto} | Preço: R$ {self.precoProduto:.2f}"
