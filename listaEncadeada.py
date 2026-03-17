@@ -83,7 +83,7 @@ class ListaEncadeada:
 
         return None
         
-    def removerId(self, id):
+    def removerIdProduto(self, idProduto):
         atual = self.head
         anterior = None
 
@@ -100,5 +100,22 @@ class ListaEncadeada:
 
         return None
 
-    def esta_vazia(self):
+        def removerIdCliente(self, idCliente):
+        atual = self.head
+        anterior = None
+
+        while atual is not None:
+            if str(atual.valor.id) == str(id):
+                if anterior is None:
+                    self.head = atual.proximo
+                else:
+                    anterior.proximo = atual.proximo
+                return atual.valor
+
+            anterior = atual
+            atual = atual.proximo
+
+        return None
+        
+    def estaVazia(self):
         return self.head is None
