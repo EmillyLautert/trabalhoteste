@@ -4,7 +4,7 @@ from venda import Venda
 from listaEncadeada import ListaEncadeada
 from pilha import Pilha
 from fila import Fila
-from persistencia import carregar_clientes, salvar_clientes, carregar_produtos, salvar_produtos, carregar_vendas, salvar_vendas
+from persistencia import carregarClientes, salvarClientes, carregarProdutos, salvarProdutos, carregarVendas, salvarVendas
 
 class SistemaEstoque:
     def __init__(self):
