@@ -1,25 +1,26 @@
+''' MARIA'''
+
 from cliente import Cliente
 from produto import Produto
 from venda import Venda
 from listaEncadeada import ListaEncadeada
 from pilha import Pilha
 from fila import Fila
-from persistencia import carregarClientes, salvarClientes, carregarProdutos, salvarProdutos, carregarVendas, salvarVendas
+from persistencia import (carregarClientes, salvarClientes, carregarProdutos, salvarProdutos, carregarVendas, salvarVendas)
 
 class SistemaEstoque:
     def __init__(self):
-        self.clientes = ListaEncadeada()
-        self.produtos = ListaEncadeada()
-        self.vendas = Fila()
-        self.historico = Pilha()
+        self.listaClientes = ListaEncadeada()
+        self.listaProdutos = ListaEncadeada()
+        self.filaVendas = Fila()
+        self.historicoOperacoes = Pilha()
 
-        carregarClientes(self.clientes)
-        carregarProdutos(self.produtos)
-        carregarVendas(self.vendas, self.clientes, self.produtos)
+        carregarClientes(self.listaClientes)
+        carregarProdutos(self.listaProdutos)
+        carregarVendas(self.filaVendas, self.listaClientes, self.listaProdutos)
 
     def cadastrarCliente(self):
         print("\n===== CADASTRAR CLIENTE =====")
-
         idCliente = input("Digite o ID do cliente: ").strip()
         nomeCliente = input("Digite o nome do cliente: ").strip()
 
@@ -27,41 +28,36 @@ class SistemaEstoque:
             print("Erro: ID e nome são obrigatórios.")
             return
 
-        # verificar ID duplicado
-        if self.clientes.buscarIdCliente (idCliente) is not None:
-            print("Erro: já existe um cliente com esse ID.")
+        if self.listaClientes.buscarClientePorId(idCliente) is not None:
+            print("Erro: o ID do cliente já existe.")
             return
 
-        # verificar nome duplicado
-        if self.clientes.buscarNomeCliente (nomeCliente) is not None:
-            print("Erro: já existe um cliente com esse nome.")
+        if self.listaClientes.buscarClientePorNome(nomeCliente) is not None:
+            print("Erro: o nome do cliente já existe.")
             return
 
         cliente = Cliente(idCliente, nomeCliente)
+        self.listaClientes.inserirFim(cliente)
+        salvarClientes(self.listaClientes)
 
-        self.clientes.inserirFim(cliente)
-        salvarClientes(self.clientes)
-
-        self.historico.push(("cadastroCliente", cliente.idCliente))
-
+        self.historicoOperacoes.push(("cadastroCliente", cliente.idCliente))
         print("Cliente cadastrado com sucesso.")
 
     def listarClientes(self):
         print("\n===== LISTA DE CLIENTES =====")
-        lista = self.clientes.listar()
+        clientes = self.listaClientes.listar()
 
-        if len(lista) == 0:
+        if len(clientes) == 0:
             print("Nenhum cliente cadastrado.")
             return
 
-        for cliente in lista:
+        for cliente in clientes:
             print(cliente)
-            
-'''MARIA ATÉ AQUI E DEPOIS CAMILA'''
+
+''' CAMILA'''
 
     def cadastrarProduto(self):
         print("\n===== CADASTRAR PRODUTO =====")
-
         idProduto = input("Digite o ID do produto: ").strip()
         nomeProduto = input("Digite o nome do produto: ").strip()
 
@@ -69,49 +65,45 @@ class SistemaEstoque:
             print("Erro: ID e nome são obrigatórios.")
             return
 
-        # verificar ID duplicado
-        if self.produtos.buscarIdProduto(idProduto) is not None:
-            print("Erro: já existe um produto com esse ID.")
+        if self.listaProdutos.buscarProdutoPorId(idProduto) is not None:
+            print("Erro: o ID do produto já existe.")
             return
 
-        # verificar nome duplicado
-        if self.produtos.buscarNomeProduto(nomeProduto) is not None:
-            print("Erro: já existe um produto com esse nome.")
+        if self.listaProdutos.buscarProdutoPorNome(nomeProduto) is not None:
+            print("Erro: o nome do produto já existe.")
             return
 
         try:
-            quantidadeProduto = int(input("Digite a quantidade: "))
-            precoProduto = float(input("Digite o preço: "))
+            quantidadeEstoque = int(input("Digite a quantidade em estoque: "))
+            precoProduto = float(input("Digite o preço do produto: "))
         except:
-            print("Erro: quantidade e preço devem ser números inteiros sem vírgula.")
+            print("Erro: quantidade e preço devem ser numéricos.")
             return
 
-        if quantidadeProduto < 0:
-            print("Erro: quantidade não pode ser negativa.")
+        if quantidadeEstoque < 0:
+            print("Erro: a quantidade não pode ser negativa.")
             return
 
         if precoProduto <= 0:
-            print("Erro: preço deve ser maior que zero.")
+            print("Erro: o preço deve ser maior que zero.")
             return
 
-        produto = Produto(idProduto, nomeProduto, quantidadeProduto, precoProduto)
+        produto = Produto(idProduto, nomeProduto, quantidadeEstoque, precoProduto)
+        self.listaProdutos.inserirFim(produto)
+        salvarProdutos(self.listaProdutos)
 
-        self.produtos.inserirFim(produto)
-        salvarProdutos(self.produtos)
-
-        self.historico.push(("cadastroProduto", produto.idProduto))
-
+        self.historicoOperacoes.push(("cadastroProduto", produto.idProduto))
         print("Produto cadastrado com sucesso.")
 
     def listarProdutos(self):
         print("\n===== LISTA DE PRODUTOS =====")
-        lista = self.produtos.listar()
+        produtos = self.listaProdutos.listar()
 
-        if len(lista) == 0:
+        if len(produtos) == 0:
             print("Nenhum produto cadastrado.")
             return
 
-        for produto in lista:
+        for produto in produtos:
             print(produto)
 
     def pesquisarProduto(self):
@@ -119,13 +111,11 @@ class SistemaEstoque:
         opcao = input("Pesquisar por 1-ID ou 2-Nome? ").strip()
 
         if opcao == "1":
-            idProduto = input("Digite o ID: ").strip()
-            produto = self.produtos.buscarIdProduto(idProduto)
-
+            idProduto = input("Digite o ID do produto: ").strip()
+            produto = self.listaProdutos.buscarProdutoPorId(idProduto)
         elif opcao == "2":
-            nomeProduto = input("Digite o nome: ").strip()
-            produto = self.produtos.buscarNomeProduto(nomeProduto)
-
+            nomeProduto = input("Digite o nome do produto: ").strip()
+            produto = self.listaProdutos.buscarProdutoPorNome(nomeProduto)
         else:
             print("Opção inválida.")
             return
@@ -134,8 +124,8 @@ class SistemaEstoque:
             print("Produto não encontrado.")
         else:
             print(produto)
-            
-'''ATÉ AQUI CAMILA E DEPOIS EMILLY'''
+
+''' EMILLY'''
 
     def realizarVenda(self):
         print("\n===== REALIZAR VENDA =====")
@@ -144,146 +134,152 @@ class SistemaEstoque:
         idProduto = input("Digite o ID do produto: ").strip()
 
         if idVenda == "" or idCliente == "" or idProduto == "":
-            print("Erro: IDs não podem ser vazios.")
+            print("Erro: os IDs são obrigatórios.")
             return
 
-        cliente = self.clientes.buscarIdCliente(idCliente)
+        vendas = self.filaVendas.listar()
+        for venda in vendas:
+            if str(venda.idVenda) == str(idVenda):
+                print("Erro: o ID da venda já existe.")
+                return
+
+        cliente = self.listaClientes.buscarClientePorId(idCliente)
         if cliente is None:
-            print("Erro: cliente não cadastrado.")
+            print("Erro: cliente não encontrado.")
             return
 
-        produto = self.produtos.buscarIdProduto(idProduto)
+        produto = self.listaProdutos.buscarProdutoPorId(idProduto)
         if produto is None:
-            print("Erro: produto não cadastrado.")
+            print("Erro: produto não encontrado.")
             return
 
         try:
-            quantidadeVenda = int(input("Digite a quantidade vendida: "))
+            quantidade = int(input("Digite a quantidade vendida: "))
         except:
             print("Erro: a quantidade deve ser um número inteiro.")
             return
 
-        if quantidadeVenda <= 0:
+        if quantidade <= 0:
             print("Erro: a quantidade deve ser maior que zero.")
             return
 
-        elif quantidadeVenda > produto.quantidadeProduto:
+        if quantidade > produto.quantidadeEstoque:
             print("Erro: estoque insuficiente.")
             return
-        else    
-            valorTotal = quantidadeVenda * produto.precoProduto
-            venda = Venda(idVenda, cliente, produto, quantidadeVenda, valorTotal)
 
-            quantidadeAnterior = produto.quantidadeProduto
-            produto.quantidadeProduto -= quantidadeVenda
+        quantidadeAnterior = produto.quantidadeEstoque
+        produto.quantidadeEstoque -= quantidade
 
-            self.vendas.enqueue(venda)
+        venda = Venda(idVenda, cliente, produto, quantidade)
+        self.filaVendas.enqueue(venda)
 
-            salvarProdutos(self.produtos)
-            salvarVendas(self.vendas)
+        salvarProdutos(self.listaProdutos)
+        salvarVendas(self.filaVendas)
 
-            self.historico.push(("venda", venda.idVenda, produto.idProduto, quantidadeAnterior))
-            print("Venda realizada com sucesso.")
+        self.historicoOperacoes.push(("venda", venda.idVenda, produto.idProduto, quantidadeAnterior))
+        print("Venda realizada com sucesso.")
 
     def visualizarFilaVendas(self):
         print("\n===== FILA DE VENDAS =====")
-        lista = self.vendas.listar()
+        vendas = self.filaVendas.listar()
 
-        if len(lista) == 0:
+        if len(vendas) == 0:
             print("Nenhuma venda registrada.")
             return
 
-        for venda in lista:
+        for venda in vendas:
             print(venda)
 
     def desfazerUltimaOperacao(self):
         print("\n===== DESFAZER ÚLTIMA OPERAÇÃO =====")
 
-        if self.historico.estaVazia():
+        if self.historicoOperacoes.estaVazia():
             print("Não há operações para desfazer.")
             return
 
-        operacao = self.historico.pop()
+        operacao = self.historicoOperacoes.pop()
 
         if operacao[0] == "cadastroCliente":
             idCliente = operacao[1]
-            removido = self.clientes.removerIdCliente(idCliente)
-            if removido is not None:
-                salvarClientes(self.clientes)
-                print("Último cadastro de cliente desfeito.")
+            clienteRemovido = self.listaClientes.removerClientePorId(idCliente)
+
+            if clienteRemovido is not None:
+                salvarClientes(self.listaClientes)
+                print("Cadastro de cliente desfeito com sucesso.")
             else:
-                print("Não foi possível desfazer a operação.")
+                print("Não foi possível desfazer o cadastro do cliente.")
 
         elif operacao[0] == "cadastroProduto":
             idProduto = operacao[1]
-            removido = self.produtos.removerIdProduto(idProduto)
-            if removido is not None:
-                salvarProdutos(self.produtos)
-                print("Último cadastro de produto desfeito.")
+            produtoRemovido = self.listaProdutos.removerProdutoPorId(idProduto)
+
+            if produtoRemovido is not None:
+                salvarProdutos(self.listaProdutos)
+                print("Cadastro de produto desfeito com sucesso.")
             else:
-                print("Não foi possível desfazer a operação.")
+                print("Não foi possível desfazer o cadastro do produto.")
 
         elif operacao[0] == "venda":
             idVenda = operacao[1]
             idProduto = operacao[2]
             quantidadeAnterior = operacao[3]
 
-            listaVendas = self.vendas.listar()
-            indice = -1
+            vendas = self.filaVendas.listar()
+            indiceVenda = -1
 
-            for i in range(len(listaVendas)):
-                if listaVendas[i].id == idVenda:
-                    indice = i
+            for i in range(len(vendas)):
+                if str(vendas[i].idVenda) == str(idVenda):
+                    indiceVenda = i
 
-            if indice != -1:
-                listaVendas.pop(indice)
+            if indiceVenda != -1:
+                vendas.pop(indiceVenda)
 
-                produto = self.produtos.buscarIdProduto(idProduto)
+                produto = self.listaProdutos.buscarProdutoPorId(idProduto)
                 if produto is not None:
-                    produto.quantidadeProduto = quantidadeAnterior
+                    produto.quantidadeEstoque = quantidadeAnterior
 
-                salvarProdutos(self.produtos)
-                salvarVendas(self.vendas)
-                print("Última venda desfeita com sucesso.")
+                salvarProdutos(self.listaProdutos)
+                salvarVendas(self.filaVendas)
+                print("Venda desfeita com sucesso.")
             else:
                 print("Não foi possível desfazer a venda.")
 
         else:
             print("Operação desconhecida.")
 
-    def valorTotalEstoque(self):
+    def exibirValorTotalEstoque(self):
         print("\n===== VALOR TOTAL DO ESTOQUE =====")
-        total = 0
+        totalEstoque = 0
 
-        for produto in self.produtos.listar():
-            total += produto.quantidadeProduto * produto.precoProduto
+        for produto in self.listaProdutos.listar():
+            totalEstoque += produto.quantidadeEstoque * produto.precoProduto
 
-        print(f"Valor total do estoque: R$ {total:.2f}")
+        print(f"Valor total do estoque: R${totalEstoque:.2f}")
 
-    def valorTotalVendas(self):
+    def exibirValorTotalVendas(self):
         print("\n===== VALOR TOTAL DE VENDAS =====")
-        total = 0
+        totalVendas = 0
 
-        for venda in self.vendas.listar():
-            total += venda.valorTotal
+        for venda in self.filaVendas.listar():
+            totalVendas += venda.valorTotal
 
-        print(f"Valor total vendido: R$ {total:.2f}")
+        print(f"Valor total de vendas: R${totalVendas:.2f}")
 
-    def clientesValoresGastos(self):
+    def exibirClientesEValoresGastos(self):
         print("\n===== CLIENTES E VALORES GASTOS =====")
 
-        listaClientes = self.clientes.listar()
-        listaVendas = self.vendas.listar()
+        clientes = self.listaClientes.listar()
+        vendas = self.filaVendas.listar()
 
-        if len(listaClientes) == 0:
+        if len(clientes) == 0:
             print("Nenhum cliente cadastrado.")
             return
 
-        for cliente in listaClientes:
+        for cliente in clientes:
             totalGasto = 0
 
-            for venda in listaVendas:
-                if venda.cliente.id == cliente.id:
+            for venda in vendas:
+                if str(venda.cliente.idCliente) == str(cliente.idCliente):
                     totalGasto += venda.valorTotal
 
-            print(f"Cliente: {cliente.nomeCliente} | Total gasto: R$ {totalGasto:.2f}")
+            print(f"Cliente: {cliente.nomeCliente} | Total gasto: R${totalGasto:.2f}")
