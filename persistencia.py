@@ -1,3 +1,5 @@
+''' GABI '''
+
 import os
 from cliente import Cliente
 from produto import Produto
@@ -17,30 +19,32 @@ def carregarClientes(listaClientes):
         with open("clientes.csv", "r", encoding="utf-8") as arquivo:
             for linha in arquivo:
                 linha = linha.strip()
+
                 if linha == "":
                     continue
 
-                partes = linha.split(";")
+                partes = linha.split(",")
+
                 if len(partes) != 2:
                     continue
 
                 idCliente = partes[0]
                 nomeCliente = partes[1]
 
-                if listaClientes.buscarIdCliente(idCliente) is None:
+                if listaClientes.buscarClientePorId(idCliente) is None:
                     cliente = Cliente(idCliente, nomeCliente)
                     listaClientes.inserirFim(cliente)
     except:
-        print("Erro ao carregar clientes. Tente novamente.")
+        print("Erro ao carregar clientes.")
 
 
 def salvarClientes(listaClientes):
     try:
         with open("clientes.csv", "w", encoding="utf-8") as arquivo:
             for cliente in listaClientes.listar():
-                arquivo.write(cliente.to_csv() + "\n")
+                arquivo.write(cliente.to_csv())
     except:
-        print("Erro ao salvar clientes. Tente novamente.")
+        print("Erro ao salvar clientes.")
 
 
 def carregarProdutos(listaProdutos):
@@ -50,10 +54,12 @@ def carregarProdutos(listaProdutos):
         with open("produtos.csv", "r", encoding="utf-8") as arquivo:
             for linha in arquivo:
                 linha = linha.strip()
+
                 if linha == "":
                     continue
 
-                partes = linha.split(";")
+                partes = linha.split(",")
+
                 if len(partes) != 4:
                     continue
 
@@ -61,28 +67,27 @@ def carregarProdutos(listaProdutos):
                 nomeProduto = partes[1]
 
                 try:
-                    quantidadeProfuto = int(partes[2])
+                    quantidadeEstoque = int(partes[2])
                     precoProduto = float(partes[3])
                 except:
                     continue
 
-                if listaProdutos.buscarIdProduto(idProduto) is None:
-                    produto = Produto(idProduto, nomeProduto, quantidadeProduto, precoProduto)
+                if listaProdutos.buscarProdutoPorId(idProduto) is None:
+                    produto = Produto(idProduto, nomeProduto, quantidadeEstoque, precoProduto)
                     listaProdutos.inserirFim(produto)
     except:
-        print("Erro ao carregar produtos. Tente novamente.")
+        print("Erro ao carregar produtos.")
 
 
 def salvarProdutos(listaProdutos):
     try:
         with open("produtos.csv", "w", encoding="utf-8") as arquivo:
             for produto in listaProdutos.listar():
-                arquivo.write(produto.to_csv() + "\n")
+                arquivo.write(produto.to_csv())
     except:
-        print("Erro ao salvar produtos. Tente novamente.")
+        print("Erro ao salvar produtos.")
 
-''' GABRIELA ATÉ AQUI'''
-'''MATHIAS DEPOIS DAQUI'''
+''' MATHIAS '''
 
 def carregarVendas(filaVendas, listaClientes, listaProdutos):
     garantirArquivo("vendas.csv")
@@ -91,10 +96,12 @@ def carregarVendas(filaVendas, listaClientes, listaProdutos):
         with open("vendas.csv", "r", encoding="utf-8") as arquivo:
             for linha in arquivo:
                 linha = linha.strip()
+
                 if linha == "":
                     continue
 
-                partes = linha.split(";")
+                partes = linha.split(",")
+
                 if len(partes) != 5:
                     continue
 
@@ -103,25 +110,24 @@ def carregarVendas(filaVendas, listaClientes, listaProdutos):
                 idProduto = partes[2]
 
                 try:
-                    quantidadeVenda = int(partes[3])
-                    valorTotal = float(partes[4])
+                    quantidade = int(partes[3])
                 except:
                     continue
 
-                cliente = lista_clientes.buscarIdCliente(idCliente)
-                produto = lista_produtos.buscarIdProduto(idProduto)
+                cliente = listaClientes.buscarClientePorId(idCliente)
+                produto = listaProdutos.buscarProdutoPorId(idProduto)
 
                 if cliente is not None and produto is not None:
-                    venda = Venda(idVenda, cliente, produto, quantidadeVenda, valorTotal)
+                    venda = Venda(idVenda, cliente, produto, quantidade)
                     filaVendas.enqueue(venda)
     except:
-        print("Erro ao carregar vendas. Tente novamente.")
+        print("Erro ao carregar vendas.")
 
 
 def salvarVendas(filaVendas):
     try:
         with open("vendas.csv", "w", encoding="utf-8") as arquivo:
             for venda in filaVendas.listar():
-                arquivo.write(venda.to_csv() + "\n")
+                arquivo.write(venda.to_csv())
     except:
-        print("Erro ao salvar vendas. Tente novamente.")
+        print("Erro ao salvar vendas.")
