@@ -8,7 +8,7 @@ class ListaEncadeada:
     def __init__(self):
         self.head = None
 
-    def inserir_fim(self, valor):
+    def inserirFim(self, valor):
         novo = Nodo(valor)
 
         if self.head is None:
@@ -31,7 +31,7 @@ class ListaEncadeada:
 
         return elementos
 
-    def buscar_por_id(self, id):
+    def buscarIdProduto(self, idProduto):
         atual = self.head
 
         while atual is not None:
@@ -41,7 +41,27 @@ class ListaEncadeada:
 
         return None
 
-    def buscar_por_nome(self, nome):
+    def buscarIdCliente(self, idCliente):
+        atual = self.head
+
+        while atual is not None:
+            if str(atual.valor.id) == str(id):
+                return atual.valor
+            atual = atual.proximo
+
+        return None
+
+    def buscarIdVenda(self, idVenda):
+        atual = self.head
+
+        while atual is not None:
+            if str(atual.valor.id) == str(id):
+                return atual.valor
+            atual = atual.proximo
+
+        return None
+
+    def buscarNomeProduto(self, nomeProduto):
         atual = self.head
         nome = nome.lower()
 
@@ -52,7 +72,18 @@ class ListaEncadeada:
 
         return None
 
-    def remover_por_id(self, id):
+        def buscarNomeCliente(self, nomeCliente):
+        atual = self.head
+        nome = nome.lower()
+
+        while atual is not None:
+            if atual.valor.nome.lower() == nome:
+                return atual.valor
+            atual = atual.proximo
+
+        return None
+        
+    def removerId(self, id):
         atual = self.head
         anterior = None
 
